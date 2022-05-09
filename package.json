@@ -1,0 +1,12 @@
+{
+  "name": "budget-tracker",
+  "version": "1.0.0",
+  "description": "It's an app that allows user to track their expensive budggets by adding expenses and deposits and it offers online features where most application don't app that advantage.",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "author": "Wilmer",
+  "license": "ISC"
+}
