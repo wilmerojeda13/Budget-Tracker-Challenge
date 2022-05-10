@@ -16,6 +16,7 @@ const FILES_TO_CACHE = [
 
 const CACHE_NAME = "static-cache-v1";
 const DATA_CACHE_NAME = "data-cache-v1";
+const APP_PREFIX = 'BudgerTracker-';
 
 //install
 self.addEventListener('install', function (e) {
@@ -26,3 +27,26 @@ self.addEventListener('install', function (e) {
         })
     )
 })
+
+//activate
+
+self.addEventListener('activate', function (e) {
+    e.waitUntil(
+        caches.keys().then(function (keyList) {
+            let cacheKeeplist = keyList.filter(function (key) {
+                return key.lastIndexOf(APP_PREFIX);
+            })
+            cacheKeeplist.push(CACHE_NAME);
+
+            return Promise.all(
+                keyList.map(function (key, i) {
+                    if(cacheKeeplist.indexOf(key) === -1) {
+                        console.log('deleting cache :' + keyList[i]);
+                        return caches.delete(keyList[i]);
+                    }
+                })
+            );
+        })
+    )
+})
+
