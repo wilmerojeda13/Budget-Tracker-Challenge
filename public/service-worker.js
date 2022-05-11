@@ -50,3 +50,20 @@ self.addEventListener('activate', function (e) {
     )
 })
 
+// fetch 
+self.addEventListener('fetch', function (e) {
+    console.log('fetch request :' + e.request.url);
+    e.respondWith(
+        caches.match(e.request).then(function(request) {
+            if(request) {
+                // if cache is avalable respond to cache
+                console.log('responding cache :' + e.request.url);
+                return request;
+            } else {
+                // if there is not cache try to fetch results
+                console.log('file is not cache, fetching:' + e.request.url);
+                return fetch(e.request);
+            }
+        })
+    )
+})
