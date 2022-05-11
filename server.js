@@ -18,14 +18,13 @@ app.use(express.json());
 app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/budget', {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true
-});
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+
 
 // routes
 app.use(require("./routes/api.js"));
 
-app.listen(PORT, () => {
-  console.log(`App running on port 🌍 ${PORT}!`);
-});
+mongoose.set('debug', true);
+app.listen(PORT, () => console.log(`🌍 Connected on localhost:${PORT}`));
