@@ -38,4 +38,35 @@ function uploadBudget() {
 
     //accessing to an object store
     const store = transaction.objectStore("new_budget");
+
+    //get all records from the store
+    const getAll = store.getAll = store.getAll();
+
+    getAll.onsuccess = function() {
+        if (getAll.result.length > 0) {
+            fetch('/api/transaction/bulk', {
+                method: 'POST',
+                body: JSON.stringify(getAll.result),
+                headers: {
+                    Accept: 'application/json, text/plain, */*,',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(() => {
+                //delete records
+                const transaction = db.transaction(['new_budget'], 'readwrite');
+                const store = transaction.objectStore('new_budget');
+                store.clear();
+            })
+        }
+    };
 }
+function deleteTransaction() {
+    const transaction = db.transaction(['new_budget'], 'readwrite');
+    const store = transaction.objectStore('new_budget');
+    store.clear();
+}
+
+//Listen to app online
+window.addEventListener('online', uploadBudget);
